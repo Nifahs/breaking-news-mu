@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import { Button } from '@material-ui/core';
 import './App.css';
+import News from './components/News/News';
+import Bar from './components/Bar/Bar';
+
 
 function App() {
+
+  const [articles, setArticles] = useState([])
+  useEffect(()=>{
+    fetch('https://newsapi.org/v2/top-headlines?country=us&apiKey=7c0121f60fe74c2481d891c1c937b558')
+    .then(res=> res.json())
+    .then(data=> setArticles(data.articles))
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Bar></Bar>
+      <h1>total articles:{articles.length}</h1>
+      {/* <Button color="primary">Hello World</Button> */}
+      {
+        articles.map(article=> <News articles ={article}></News>)
+      }
     </div>
   );
 }
